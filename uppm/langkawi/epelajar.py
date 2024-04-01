@@ -34,3 +34,29 @@ def getProfile(id : str, ic : str, year : str) :
     returndat = {"error" : fail}
   
   return returndat
+
+def checkCred(id : str, ic : str) :
+  returndat = {"error" : "unknown"}
+  
+  url = "https://uppmmrsmlangkawi.com/epelajar/MenuUtama.asp"
+  
+  payload = {
+    "txtNoMak": id,
+    "txtPwd": ic
+  }
+  
+  #send request
+  response = requests.post(url, data=payload)
+
+  if response.status_code == 200:
+    soup = BeautifulSoup(response.text, "html.parser")
+    if response.url != "https://uppmmrsmlangkawi.com/epelajar/LoginGagal.asp" :
+      returndat = True
+    else :
+      returndat = False
+  else:
+    fail = "Failed to retrieve. Status code: " + str(response.status_code)
+    returndat = {"error" : fail}
+
+  return returndat
+  
