@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 
+baseurl = "https://uppmmrsmlangkawi.com/epelajar/"
+
 def getProfile(id : str, ic : str, year : str) :
   returndat = {"error" : "unknown"}
   
-  url = "https://uppmmrsmlangkawi.com/epelajar/DataPeribadi.asp"
+  url = baseurl + "DataPeribadi.asp"
   
   payload = {
     "txtNoMak": id,
@@ -38,7 +40,7 @@ def getProfile(id : str, ic : str, year : str) :
 def checkCred(id : str, ic : str) :
   returndat = {"error" : "unknown"}
   
-  url = "https://uppmmrsmlangkawi.com/epelajar/MenuUtama.asp"
+  url = baseurl + "MenuUtama.asp"
   
   payload = {
     "txtNoMak": id,
