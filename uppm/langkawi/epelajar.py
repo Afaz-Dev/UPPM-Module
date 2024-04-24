@@ -1,8 +1,35 @@
 from bs4 import BeautifulSoup
-import requests
+from curl_cffi import requests
 
 baseurl = "https://uppmmrsmlangkawi.com/epelajar/"
 
+#Check credientials
+def checkCred(id : str, ic : str) :
+  returndat = {"error" : "unknown"}
+  
+  url = baseurl + "MenuUtama.asp"
+  
+  payload = {
+    "txtNoMak": id,
+    "txtPwd": ic
+  }
+  
+  #send request
+  response = requests.post(url, data=payload, impersonate="chrome110")
+  
+  if response.status_code == 200:
+    soup = BeautifulSoup(response.text, "html.parser")
+    if response.url != "https://uppmmrsmlangkawi.com/epelajar/LoginGagal.asp" :
+      returndat = True
+    else :
+      returndat = False
+  else:
+    fail = "Failed to retrieve. Status code: " + str(response.status_code)
+    returndat = {"error" : fail}
+  
+  return returndat
+
+#Get profile
 def getProfile(id : str, ic : str, year : str) :
   returndat = {"error" : "unknown"}
   
@@ -15,7 +42,7 @@ def getProfile(id : str, ic : str, year : str) :
   }
   
   #send request
-  response = requests.post(url, data=payload)
+  response = requests.post(url, data=payload, impersonate="chrome110")
   
   if response.status_code == 200:
     soup = BeautifulSoup(response.text, "html.parser")
@@ -37,28 +64,30 @@ def getProfile(id : str, ic : str, year : str) :
   
   return returndat
 
-def checkCred(id : str, ic : str) :
+#Get PAJSK info
+def getpajsk(id : str, ic : str, year : str, form : str) :
   returndat = {"error" : "unknown"}
-  
-  url = baseurl + "MenuUtama.asp"
-  
+
+  url = baseurl + "KokuPajsk.asp"
+
   payload = {
     "txtNoMak": id,
-    "txtPwd": ic
+    "txtPwd": ic,
+    "cboTahun": year,
+    "cboTingkatan": form
   }
-  
+
   #send request
-  response = requests.post(url, data=payload)
+  response = requests.post(url, data=payload, impersonate="chrome110")
 
   if response.status_code == 200:
-    soup = BeautifulSoup(response.text, "html.parser")
-    if response.url != "https://uppmmrsmlangkawi.com/epelajar/LoginGagal.asp" :
-      returndat = True
-    else :
-      returndat = False
+    returndat = response.text
   else:
     fail = "Failed to retrieve. Status code: " + str(response.status_code)
     returndat = {"error" : fail}
 
   return returndat
+  
+
+
   
