@@ -57,6 +57,8 @@ def getProfile(id : str, ic : str, year : str) :
       num += 1
     profile['ALAMAT SURAT MENYURAT'] = [p_elements[25].text.strip(), p_elements[26].text.strip(), p_elements[27].text.strip(), p_elements[28].text.strip()]
     profile[p_elements[29].text.strip()] = p_elements[30].text.strip()
+    r_elements = soup.find_all("td")
+    profile[r_elements[48].text.strip()] = r_elements[50].text.strip()
     returndat = profile
   else:
     fail = "Failed to retrieve. Status code: " + str(response.status_code)
